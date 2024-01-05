@@ -12,5 +12,5 @@
 }
 .scroll-container .indicator {
     height: 100%;
-    background: #8b0000;
+    background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet);
 }
