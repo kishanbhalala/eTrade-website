@@ -36,7 +36,7 @@ const Cart = () => {
 
                 <section className='TABLE-LIST'>
                     <div className='container mx-auto my-[100px] '>
-                        <div className='flex justify-between'>
+                        <div className='flex justify-between items-center'>
                             <h1 className="text-2xl font-semibold text-[#292930]">
                                 Your Cart
                             </h1>
