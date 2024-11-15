@@ -1,6 +1,7 @@
 import React from 'react'
 import '../HomeDropdown/HomeDropdownstyle.css'
 import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 // first-button :-
@@ -65,12 +66,33 @@ export const HomeDropdownHover2 = () => {
 
 // Rightpart :-
 export const HomeRightpart = () => {
+
+  const { loginWithRedirect, user, logout, isAuthenticated } = useAuth0();
+
   return (
     <div className='right-part z-10'>
       <div className='list-none flex text-sm text-gray-700 '>
+
+        {
+          isAuthenticated && (<li className=' cursor-pointer ml-6 text-gray-500'>{user.name}</li>)
+        }
+
         <li className='hover:text-blue-500 cursor-pointer ml-6 text-gray-500'>Help</li>
         <Link to="/SignUp" className='hover:text-blue-500 cursor-pointer ml-6 text-gray-500'>Join Us</Link>
-        <Link to="/SignIn" className='hover:text-blue-500 cursor-pointer ml-6 text-gray-500'>Sign In</Link>
+        {
+          isAuthenticated ?
+            (
+              <div className='hover:text-blue-500 cursor-pointer ml-6 text-gray-500'>
+                <div onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+                  Log Out
+                </div>
+              </div>
+            ) : (
+              <div className='hover:text-blue-500 cursor-pointer ml-6 text-gray-500'>
+                <div onClick={() => loginWithRedirect()}>Log In</div>
+              </div>
+            )
+        }
       </div>
     </div>
   )
@@ -79,15 +101,15 @@ export const HomeRightpart = () => {
 export const TopBar = () => {
   return (
     <>
-    <div className='container mx-auto'>
-      <div className='flex justify-between items-center'>
-        <div className='flex'>
-          <HomeDropdownHover1 />
-          <HomeDropdownHover2 />
+      <div className='container mx-auto'>
+        <div className='flex justify-between items-center'>
+          <div className='flex'>
+            <HomeDropdownHover1 />
+            <HomeDropdownHover2 />
+          </div>
+          <HomeRightpart />
         </div>
-        <HomeRightpart />
       </div>
-    </div>
     </>
   )
 }

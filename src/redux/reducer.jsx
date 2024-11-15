@@ -1,11 +1,22 @@
 import { ADD_TO_CART, DECREMENT_QUANTITY, EMPTY_CART, INCREMENT_QUANTITY, REMOVE_FROM_CART } from "./constant";
 
+
 export const cartData = (data = [], action) => {
 
     switch (action.type) {
-        
+
         case ADD_TO_CART:
-            return [action.data, ...data]
+            const existingProductIndex = data.findIndex((item) => item.id === action.data.id);
+
+            if (existingProductIndex !== -1) {
+                return data.map((item, index) =>
+                    index === existingProductIndex ? { ...item } : item
+                );
+            } else {
+                // Product is not in the cart, add it
+                return [action.data, ...data];
+            }
+        // return [action.data, ...data]
 
         case REMOVE_FROM_CART:
             const remainingItem = data.filter((item) => item.id !== action.data);

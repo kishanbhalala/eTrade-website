@@ -1,7 +1,7 @@
 import React from 'react'
 import '../AllDropdown/AllDropdownstyle.css'
 import { Link } from 'react-router-dom';
-
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 
@@ -67,12 +67,33 @@ export const AllDropdownHover2 = () => {
 
 // Rightpart :-
 export const AllRightpart = () => {
+
+  const { loginWithRedirect,user, logout, isAuthenticated } = useAuth0();
+
   return (
     <div className='right-part'>
       <div className='list-none flex text-sm'>
+
+        {
+          isAuthenticated && (<h2 className='text-gray-500'>{user.name}</h2>)
+        }
+
         <li className='hover:text-blue-500 cursor-pointer ml-6 text-gray-400'>Help</li>
         <Link to="/SignUp" className='hover:text-blue-500 cursor-pointer ml-6 text-gray-400'>Join Us</Link>
-        <Link to="/SignIn" className='hover:text-blue-500 cursor-pointer ml-6 text-gray-400'>Sign In</Link>
+        {
+          isAuthenticated ?
+            (
+              <div className='hover:text-blue-500 cursor-pointer ml-6 text-gray-500'>
+                <div onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+                  Log Out
+                </div>
+              </div>
+            ) : (
+              <div className='hover:text-blue-500 cursor-pointer ml-6 text-gray-500'>
+                <div onClick={() => loginWithRedirect()}>Log In</div>
+              </div>
+            )
+        }
       </div>
     </div>
   )
@@ -84,13 +105,13 @@ export const AllTopBar = () => {
   return (
     <>
       <div className=' py-2 bg-[#292930]' id='top-scroll'>
-          <div className='flex justify-between items-center container mx-auto'>
-            <div className='flex '>
-              <AllDropdownHover1 />
-              <AllDropdownHover2 />
-            </div>
-            <AllRightpart />
+        <div className='flex justify-between items-center container mx-auto'>
+          <div className='flex '>
+            <AllDropdownHover1 />
+            <AllDropdownHover2 />
           </div>
+          <AllRightpart />
+        </div>
       </div>
     </>
   )
